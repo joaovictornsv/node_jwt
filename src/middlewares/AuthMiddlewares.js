@@ -1,3 +1,4 @@
+const HttpException = require('./HttpException')
 const jwt = require('jsonwebtoken');
 
 function verifyJWT(req, res, next) {
@@ -5,18 +6,18 @@ function verifyJWT(req, res, next) {
     const token = req.cookies.jwt
 
     if (!token) {
-      return res.status(401).json({ auth: false, message: 'No token provided.' })
+      throw new HttpException('No token provided.', 401)
     }
   
     jwt.verify(token, process.env.SECRET, (err, decoded) => {
-      if(err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' })
-  
+      if(err) throw new HttpException('Failed to authenticate token.', 500)
+
       req.userID = decoded.id
       next();
     })
   }
   else {
-    return res.status(401).json({ auth: false, message: 'No token provided.' })
+    throw new HttpException('No token provided.', 401)
   }
 }
 

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const HttpException = require('../middlewares/HttpException');
 
 class AuthController {
   login(req, res) {
@@ -6,7 +7,7 @@ class AuthController {
       const jwtCookie = req.cookies.jwt
 
       if (jwtCookie) {
-        return res.json({alert: "An token already exists"})
+        throw new HttpException("An token already exists")
       }
     }
 
@@ -24,7 +25,7 @@ class AuthController {
       return res.json({auth: true, token: token})
     }
 
-    return res.json({alert: "Dados errados"})
+    throw new HttpException("Your access credentials are invalid")
 
   }
 
