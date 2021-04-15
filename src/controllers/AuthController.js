@@ -17,11 +17,11 @@ class AuthController {
     if (userValid && passValid) {
       const id = 1;
       const token = jwt.sign({ id }, process.env.SECRET, {
-        expiresIn: 600
+        expiresIn: 60
       })
 
 
-      res.cookie('jwt', token, { httpOnly: true, maxAge: 30*1000})
+      res.cookie('jwt', token, { httpOnly: true, maxAge: 60*1000})
       return res.json({auth: true, token: token})
     }
 
